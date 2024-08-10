@@ -41,3 +41,4 @@ jobs:
 
           # Optionally restart your web server or app service
           # ssh -i key.pem $EC2_USER@$EC2_HOST 'sudo systemctl restart nginx'
+          
