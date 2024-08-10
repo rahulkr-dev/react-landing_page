@@ -19,21 +19,14 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
         run: |
           # Create a temporary SSH key file
-          echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
+          echo "$EC2_SSH_KEY" > key.pem
           chmod 600 key.pem
 
           # Create directory on EC2 if it doesn't exist
-          ssh -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'mkdir -p /apps/react/landing-page'
+          ssh -i key.pem $EC2_USER@$EC2_HOST 'mkdir -p /apps/react/landing-page'
 
           # Upload the dist directory to EC2
-          rsync -avz -e "ssh -i key.pem" ./dist/ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/apps/react/landing-page
+          rsync -avz -e "ssh -i key.pem" ./dist/ $EC2_USER@$EC2_HOST:/apps/react/landing-page
 
           # Optionally restart your web server or app service
-          # ssh -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'sudo systemctl restart nginx'
-```
-
-### Changes and Checks:
-1. **Consistency in Environment Variables**: Ensure that the environment variables are consistently referenced using `${{ secrets.VARIABLE_NAME }}`.
-2. **Quoting Secrets**: Ensure secrets are quoted properly to avoid any issues with special characters.
-
-This should work without any YAML syntax errors. Make sure that the secrets (`EC2_SSH_KEY`, `EC2_HOST`, `EC2_USER`) are properly set in your GitHub repository settings.
+          # ssh -i key.pem $EC2_USER@$EC2_HOST 'sudo systemctl restart nginx'
